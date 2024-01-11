@@ -3,6 +3,11 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 
 const url = 'https://memegen-link-examples-upleveled.netlify.app/';
+const folderName = './memes';
+
+if (!fs.existsSync(folderName)) {
+  fs.mkdirSync(folderName, { recursive: true });
+}
 
 const getDownloadedImages = async (url) => {
   try {
@@ -15,37 +20,20 @@ const getDownloadedImages = async (url) => {
         let link = $(elem).attr('src');
         downloadedImages.push(link);
       });
+    let fileName = 1;
+    for (let i of downloadedImages) {
+      fileName = fileName < 10 ? '0' + fileName : fileName;
+      await fs.writeFileSync(`./memes/${fileName}.jpg`, i);
+      fileName++;
+    }
     console.log(downloadedImages);
   } catch (error) {
     console.error(error);
   }
+  try {
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 console.log(getDownloadedImages(url));
-
- try {
-      if (!fs.existsSync('./meme_folder')) {
-        fs.mkdirSync('./meme_folder');
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    let count = 1;
-    const downloadJpg = async (url) => {
-      const pic = await fetch(url);
-      const buffer = await pic.buffer();
-      await fs.promises.writeFile(`./meme_folder/${count}image.jpg`, buffer);
-      console.log(`Pictures downloaded: ${count}`);
-      count++;
-    };
-    const downloadJpgInit = async () => {
-      for (const url of arr10) {
-        await downloadJpg(url);
-      }
-    };
-
-    downloadJpgInit();
-  } catch (error) {
-    console.log(error);
-  }
-};
