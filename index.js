@@ -2,38 +2,51 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 
-const url = 'https://memegen-link-examples-upleveled.netlify.app/';
+const websiteURL = 'https://memegen-link-examples-upleveled.netlify.app/';
 const folderName = './memes';
 
 if (!fs.existsSync(folderName)) {
   fs.mkdirSync(folderName, { recursive: true });
 }
 
+// Function to scrape memes
 const getDownloadedImages = async (url) => {
   try {
     const response = await axios.get(url);
+
+    // Load the HTML
     const $ = cheerio.load(response.data);
+
+    // Create Array to save URL
     let downloadedImages = [];
+
+    // Find first 10 Images and push to Array
     $('img')
       .slice(0, 10)
       .each(function (i, elem) {
-        let link = $(elem).attr('src');
-        downloadedImages.push(link);
+        let imageURL = $(elem).attr('src');
+        downloadedImages.push(imageURL);
       });
+    // Generate the file names
     let fileName = 1;
-    for (let i of downloadedImages) {
+    for (const imageURL of downloadedImages) {
       fileName = fileName < 10 ? '0' + fileName : fileName;
-      await fs.writeFileSync(`./memes/${fileName}.jpg`, i);
+
+      // Get Image with axios
+      const imageResponse = await axios({
+        method: 'get',
+        url: imageURL,
+        responseType: 'stream',
+      });
+
+      // Save image to file
+      imageResponse.data.pipe(fs.createWriteStream(`./memes/${fileName}.jpg`));
       fileName++;
     }
-    console.log(downloadedImages);
+    console.log('Download was successful');
   } catch (error) {
     console.error(error);
   }
-  try {
-  } catch (err) {
-    console.error(err);
-  }
 };
 
-console.log(getDownloadedImages(url));
+console.log(getDownloadedImages(websiteURL));
