@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import fs from 'fs';
 
 const websiteURL = 'https://memegen-link-examples-upleveled.netlify.app/';
 const folderName = './memes';
@@ -18,13 +18,13 @@ const getDownloadedImages = async (url) => {
     const $ = cheerio.load(response.data);
 
     // Create Array to save URL
-    let downloadedImages = [];
+    const downloadedImages = [];
 
     // Find first 10 Images and push to Array
     $('img')
       .slice(0, 10)
       .each(function (i, elem) {
-        let imageURL = $(elem).attr('src');
+        const imageURL = $(elem).attr('src');
         downloadedImages.push(imageURL);
       });
     // Generate the file names
