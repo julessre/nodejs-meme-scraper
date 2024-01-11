@@ -18,15 +18,15 @@ The program should be able to run multiple times without throwing an error.
   - [x] Add `.gitignore` file with the content from cheatsheet
   - [x] Add "memes" folder to `.gitignore`
 - [x] Create a directory named "memes"
-- [ ] Research for libraries
+- [x] Research for libraries
   - [x] Avoid libraries that do multiple steps
-- [ ] Connect to the current version of the website https://memegen-link-examples-upleveled.netlify.app/
+- [x] Connect to the current version of the website https://memegen-link-examples-upleveled.netlify.app/
   - [ ] Avoid any caching?
-- [ ] Download HTML string from the website and save in a variable
-- [ ] Search inside HTML string for `<img src="..." />` and extract to array of URLs (strings)
+- [x] Download HTML string from the website and save in a variable
+- [x] Search inside HTML string for `<img src="..." />` and extract to array of URLs (strings)
   - [ ] Maybe inside of the `<section id="images">`?
-- [ ] Extract first 10 URLs from array
-- [ ] Loop over array of first 10 URLs and:
+- [x] Extract first 10 URLs from array
+- [x] Loop over array of first 10 URLs and:
   - [ ] Download the image data (string)
   - [ ] Generate path in the "memes" folder (eg. `./memes/03.jpg`)
     - [ ] 1-10
